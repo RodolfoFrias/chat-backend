@@ -1,5 +1,5 @@
 window.addEventListener('load', function(){
-    let socket = io.connect('http://192.168.15.6:9000',{'forceNew' : true});
+    let socket = io.connect('http://localhost',{'forceNew' : true});
 
     socket.on('mensaje', (mensaje) => {
         insertaMensaje(mensaje);
@@ -14,6 +14,8 @@ window.addEventListener('load', function(){
         });
         let content = document.getElementById('mensajes');
         content.innerHTML = html;
+        let contenido = document.querySelector('#contenido');
+        contenido.scrollTop = contenido.scrollHeight;
     }
 
     function enviarMensaje(){

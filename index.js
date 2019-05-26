@@ -14,7 +14,7 @@ let mensajes = [
     {
         ID      : 1,
         nick    : "ChatBot",    
-        mensaje : "Bienvenido al Chat, este es un chat version beta ajas"
+        mensaje : "Bienvenido al Chat, por favor deja algún comentarios"
     }
 ];
 
