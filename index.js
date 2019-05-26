@@ -1,6 +1,7 @@
 const express = require('express');
 const socketio = require('socket.io');
 const http = require('http');
+const cors = require('cors');
 
 const app = express()//instancia de express
 
@@ -8,6 +9,7 @@ const server = http.createServer(app); //creando el server con http y express co
 const io = socketio(server); //iniciando el server de socket.io
 const PORT = process.env.PORT || 9000;
 
+app.use(cors());
 app.use(express.static('cliente'));
 
 let mensajes = [
