@@ -1,5 +1,6 @@
 window.addEventListener('load', function(){
-    let socket = io.connect('https://chat-sockets-app.herokuapp.com/',{'forceNew' : true});
+    //let socket = io.connect('https://chat-sockets-app.herokuapp.com/',{'forceNew' : true});
+    let socket = io.connect('http://192.168.15.4:9000',{'forceNew' : true});
 
     socket.on('mensaje', (mensaje) => {
         insertaMensaje(mensaje);
