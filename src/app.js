@@ -20,6 +20,7 @@ mongoose.connect('mongodb://localhost/chat-sockets')
 
 //Importing routes
 const iRoutes = require('./routes/index');
+const errorController = require('./controllers/errors');
 
 app.use(cors());
 app.use(express.static(__dirname+'/cliente'));
@@ -33,6 +34,7 @@ app.use(express.urlencoded({entended:false}));
 
 //Routes
 app.use('/', iRoutes);
+app.use(errorController.getError404);
 
 let mensajes = [
     {
@@ -47,7 +49,7 @@ server.listen(PORT, () => {
 });
 
 server.addListener('listening', () => {
-    io.on('connection', function(socket){
+    io.on('connection', (socket) => {
       console.log(`client: ${socket.id}`);
 
       socket.emit('mensaje', mensajes);

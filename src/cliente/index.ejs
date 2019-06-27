@@ -1,6 +1,6 @@
 <% include layouts/_header %>
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="./js/main.js"></script>
 
 <nav class="navbar navbar-dark bg-dark mb-4">
         <a href="/" class="navbar-brand">Chat con sockets</a>
@@ -17,7 +17,7 @@
             </div>
             <form id="form_mensajes">
                 <div class="form-row">
-                    <input type="hidden" class="form-control" id="nick" value="<%=info.nick%>">
+                    <input type="hidden" class="form-control" id="nick" value="<%=nick%>">
                     <div class="col-md-10">
                         <input type="text" class="form-control" id="mensaje" placeholder="Type something..." value="">
                     </div>
