@@ -4,7 +4,9 @@
 
 <nav class="navbar navbar-dark bg-dark mb-4">
         <a href="/" class="navbar-brand">Chat con sockets</a>
-        <a href="/logout" class="btn btn-outline-warning my-2 -my-sm-0">Salir</a>
+        <form action="/logout" method="POST">
+            <button type="submit" class="btn btn-outline-warning my-2 -my-sm-0">Salir</button>
+        </form>
 </nav>
 
 <div class="container" style="padding: 5%;">
@@ -28,7 +30,5 @@
             </form>
     </div>
 </div>
-
-
 
 <% include layouts/_footer %>
