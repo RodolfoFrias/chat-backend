@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express');
-const socketio = require('socket.io');
 const http = require('http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -21,8 +20,6 @@ const store = new MongoStore({
     collection: 'sessions'
 });
 
-const server = http.createServer(app); //creando el server con http y express como handle request
-const io = socketio(server); //iniciando el server de socket.io
 const PORT = process.env.PORT || 9000;
 
 //Importing routes
@@ -53,8 +50,8 @@ app.use(errorController.getError404);
 let mensajes = [ 
     {
         ID      : 1,
-        nick    : "ChatBot",    
-        mensaje : "Bienvenido al Chat, por favor deja algún comentarios"
+        nick    : 'ChatBot',    
+        mensaje : 'Bienvenido al Chat, por favor deja algún comentario'
     }
 ];
 
@@ -64,23 +61,23 @@ mongoose
     .then(db => {
         console.log("Conected to database");
 
-        server.listen(PORT, () => {
+        const server = app.listen(PORT, () => {
             console.log(`Server running in http://localhost:${PORT}`)
         });
-    })
-    .catch(err => console.log(err));
+        const io = require('./socket').init(server);
 
-server.addListener('listening', () => {
-    io.on('connection', (socket) => {
-        console.log(`client: ${socket.id}`);
-
-        socket.emit('mensaje', mensajes);
-
-        socket.on('sendMensaje', (data) => {
-            mensajes.push(data);
-            io.sockets.emit('mensaje', mensajes);
+        io.on('connection', (socket) => {
+            console.log(`client: ${socket.id}`);
+        
+            socket.emit('mensaje', mensajes);
+        
+            socket.on('sendMensaje', (data) => {
+                mensajes.push(data);
+                console.log('DATA:', mensajes);
+                io.sockets.emit('mensaje', mensajes);
+            });
         });
-
+    })
+    .catch(err => {
+        throw new Error('Error al conectar a la base de datos');
     });
-});
-    

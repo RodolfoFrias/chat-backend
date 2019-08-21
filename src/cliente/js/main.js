@@ -1,6 +1,6 @@
 window.addEventListener('load', function(){
     //let socket = io.connect('https://chat-sockets-app.herokuapp.com/',{'forceNew' : true});
-    let socket = io.connect('http://192.168.15.3:9000',{'forceNew' : true});
+    let socket = io.connect('http://192.168.15.9:9000',{'forceNew' : true});
 
     socket.on('mensaje', (mensaje) => {
         insertaMensaje(mensaje);
@@ -13,6 +13,7 @@ window.addEventListener('load', function(){
                 <p>${message.mensaje}</p>
             `;
         });
+       
         let content = document.getElementById('mensajes');
         content.innerHTML = html;
         let contenido = document.querySelector('#contenido');

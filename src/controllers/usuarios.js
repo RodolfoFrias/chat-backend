@@ -2,6 +2,7 @@
 
 const User = require('../model/usuario');
 const bcrypt = require('bcryptjs');
+const {validationResult} = require('express-validator');
 
 exports.getIndex = (req, res) => {
     res.render('login', {mensaje : '', mensajeType : ''});
@@ -9,75 +10,87 @@ exports.getIndex = (req, res) => {
 
 exports.getPrincipal = (req, res) => {
     res.render('index', {
-        nick : req.session.user.nick
+        nick : req.session.user.nick,
+        sessionActive : req.session.user.sessionActive
     });
 };
 
-exports.postUsers = (req, res) => {
+exports.postUsers = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    User.findOne({email : email})
-        .then(user => {
-            console.log(user);
-            if(user){
-                bcrypt
-                .compare(password, user.password)
-                .then(doMatch => {
-                    req.session.isLoggedIn = true;
-                    req.session.user = {
-                        nick : user.usuario
-                    }
-                    req.session.save(error => {
-                        res.redirect('/principal');
-                    });
-                })
-                .catch(error => {
-                    console.log(error);
+    try {
+        const user = await User.findOne({email:email});
+        if(user){
+            const doMatch = await bcrypt.compare(password, user.password);
+            if(doMatch){
+                req.session.isLoggedIn = true;
+                req.session.user = {
+                    nick : user.usuario,
+                    sessionActive : req.session.isLoggedIn
+                }
+                req.session.save(error => {
+                   res.redirect('/principal');
                 });
             }
             else{
-                req.flash('error', 'Credenciales incorrectas, verifiquelas por favor');
+                req.flash('error', 'La contraseña no coincide, intente de nuevo por favor');
                 res.redirect('/error');
             }
-    })
-    .catch(error =>
-         console.log(`Error: ${error}`));
+        }
+        else{
+            req.flash('error', 'Credenciales incorrectas, verifiquelas por favor');
+            res.redirect('/error');
+        }
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 exports.getRegister = (req, res) => {
-    res.render('register', {mensaje:''});
+    res.render('register', {
+        mensaje:'',
+        oldInput: {
+            email: '',
+            usuario: '',
+            password : '',
+            repassword: ''
+        }
+    });
 };
 
-exports.postRegister = (req, res) => {
+exports.postRegister = async (req, res) => {
     const email = req.body.email;
     const usuario = req.body.usuario;
     const password = req.body.password;
 
-   User.findOne({email: email})
-   .then(result => {
-        if(!result){
-            bcrypt.hash(password, 12)
-            .then(hashPassword => {
-                const user = new User({
-                    email : email,
-                    usuario : usuario,
-                    password : hashPassword
-                });
-                user.save().then(result => {
-                    req.flash('success', 'Usuario creado correctamente!')
-                    res.redirect('/success')
-                });
-           });
-        }
-        else{
-            req.flash('error', 'El correo proporcionado ya existe');
-            res.redirect('/error');
-        }
-   })
-   .catch(error => {
-       console.log(err);
-   });
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).render('register', {
+            mensaje: errors.array()[0].msg, mensajeType: 'error',
+            oldInput: {
+                email: email,
+                usuario: usuario,
+                password : password,
+                repassword: req.body.repassword
+            }
+        });
+    }
+
+    try {
+        const hashPassword = await bcrypt.hash(password, 12);
+        const user = new User({
+            email : email,
+            usuario : usuario,
+            password : hashPassword
+        });
+        user.save().then(result => {
+            req.flash('success', 'Usuario creado correctamente!')
+            res.redirect('/success')
+        });
+    } catch (error) {
+        console.log('Error al cifrar password',error);
+    }
 };
 
 exports.getError = (req, res) => {
