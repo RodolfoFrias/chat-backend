@@ -12,7 +12,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongodb-session')(session);
 const flash = require('connect-flash');
 
-const MONGO_URL =  'mongodb://localhost/chat-sockets';
+const MONGO_URL = process.env.MONGO_URI || 'mongodb://localhost/chat-sockets';
 
 const app = express()//instancia de express
 const store = new MongoStore({
@@ -79,5 +79,5 @@ mongoose
         });
     })
     .catch(err => {
-        throw new Error('Error al conectar a la base de datos');
+        throw new Error('Error al conectar a la base de datos')
     });

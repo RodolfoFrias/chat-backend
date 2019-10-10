@@ -4,8 +4,8 @@
   "description": "Chat con Socket Io\u001b[D\u001b[\u001b[\u001b[\u001b[C\u001b[CIO",
   "main": "src/app.js",
   "scripts": {
-    "start": "nodemon src/app.js",
-    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "start:dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rodolfo Frías",
