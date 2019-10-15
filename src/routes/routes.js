@@ -42,5 +42,8 @@ router.get('/success', usersController.getSuccess);
 
 router.post('/logout', usersController.postLogout);
 
+router.get('/home',isAuth , usersController.getHome);
+
+router.get('/users', usersController.getUsers);
 
 module.exports = router;

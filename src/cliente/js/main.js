@@ -10,7 +10,9 @@ window.addEventListener('load', function(){
          let html = mensaje.map((message, index) => {
             return `
                 <strong>${message.nick}</strong>
-                <p>${message.mensaje}</p>
+                <div class="text-white bg-primary my-2 p-2 d-table" style="border-radius: 999px;">
+                    <p>${message.mensaje}</p>
+                </div>
             `;
         });
        
@@ -46,6 +48,7 @@ window.addEventListener('load', function(){
     }
 
     document.querySelector('#envia').addEventListener('click' , (e) => {
+        console.log('click');
         e.preventDefault();
        enviarMensaje();
        return false;

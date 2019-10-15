@@ -30,7 +30,7 @@ exports.postUsers = async (req, res) => {
                     sessionActive : req.session.isLoggedIn
                 }
                 req.session.save(error => {
-                   res.redirect('/principal');
+                   res.redirect('/home');
                 });
             }
             else{
@@ -129,5 +129,66 @@ exports.postLogout = (req, res) => {
     req.session.destroy(err => {
         res.redirect('/');
     });
+};
+
+exports.getHome = (req, res) => {
+    res.render('home', {
+        nick : req.session.user.nick,
+        sessionActive : req.session.user.sessionActive
+    });
+};
+
+exports.getUsers = (req, res) => {
+    res.status(200).json([
+        /*{
+            "Nombre":"Rodolfo Frías",
+            "photoPath":"../img/yo.PNG",
+            "sender":"You",
+            "Message":"Hola bro..",
+            "Fecha": "11:55am"
+        },
+        {
+            "Nombre":"Rodolfo Frías",
+            "photoPath":"../img/yo.PNG",
+            "sender":"You",
+            "Message":"Hola bro..",
+            "Fecha": "11:55am"
+        },
+        {
+            "Nombre":"Rodolfo Frías",
+            "photoPath":"../img/yo.PNG",
+            "sender":"You",
+            "Message":"Hola bro..",
+            "Fecha": "11:55am"
+        },
+        {
+            "Nombre":"Rodolfo Frías",
+            "photoPath":"../img/yo.PNG",
+            "sender":"You",
+            "Message":"Hola bro..",
+            "Fecha": "11:55am"
+        },
+        {
+            "Nombre":"Rodolfo Frías",
+            "photoPath":"../img/yo.PNG",
+            "sender":"You",
+            "Message":"Hola bro..",
+            "Fecha": "11:55am"
+        },
+        {
+            "Nombre":"Rodolfo Frías",
+            "photoPath":"../img/yo.PNG",
+            "sender":"You",
+            "Message":"Hola bro..",
+            "Fecha": "11:55am"
+        },
+        {
+            "Nombre":"Rodolfo Frías",
+            "photoPath":"../img/yo.PNG",
+            "sender":"You",
+            "Message":"Hola bro..",
+            "Fecha": "11:55am"
+        }*/
+    ])
 };
   

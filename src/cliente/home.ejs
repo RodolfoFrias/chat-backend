@@ -1,0 +1,16 @@
+<% include layouts/_header %>
+
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="./js/index.js"></script>
+<main class="container-fluid">
+   <div class="row" id="content">
+       <div class="col-12 col-md-3 border-right m-0 p-0" id="inbox">
+         <% include components/inbox %>
+       </div>
+       <div class="col-md-9 d-none d-md-block" id="chat">
+         <% include components/chat %>
+       </div>
+   </div>
+</main>
+
+<% include layouts/_footer %>

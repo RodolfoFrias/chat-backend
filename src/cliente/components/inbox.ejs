@@ -1,0 +1,41 @@
+<nav class="navbar-expand-lg navbar-light bg-light px-2 py-2 border-bottom">
+    <div class="row">
+        <div class="col-4">
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fa fa-lg fa-user"></span>
+                </a>
+                
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <button class="btn dropdown-item" href="#">Ver perfil</button>
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="btn dropdown-item">Salir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <h6>Mensajes</h6>
+        </div>
+        <div class="col-4 text-right">
+            <a title="Chat general" href="#" class="my-2" id="btnChatgral">
+                <span class="fa fa-lg fa-comments"></span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="mt-2 mx-2">
+    <form action="">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Buscar">
+        </div>
+    </form>
+</div>
+
+<div class="overflow-auto" id="conversations" style="height:540px ;">
+    
+</div>
+
+
+
