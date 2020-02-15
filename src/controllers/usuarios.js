@@ -26,6 +26,8 @@ exports.postUsers = async (req, res) => {
             if(doMatch){
                 req.session.isLoggedIn = true;
                 req.session.user = {
+                    ID: user._id,
+                    email: user.email,
                     nick : user.usuario,
                     sessionActive : req.session.isLoggedIn
                 }
@@ -132,7 +134,9 @@ exports.postLogout = (req, res) => {
 };
 
 exports.getHome = (req, res) => {
+    console.log(req.session.user);
     res.render('home', {
+        ID: req.session.user.ID,
         nick : req.session.user.nick,
         sessionActive : req.session.user.sessionActive
     });

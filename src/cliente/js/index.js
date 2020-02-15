@@ -2,14 +2,14 @@
 
 function Messenger(){
     
-    this.socket = io.connect('http://192.168.15.9:9000',{'forceNew' : true});
+    this.socket = io.connect('http://192.168.0.4:9000',{'forceNew' : true});
 
     this.socket.on('mensaje', (mensaje) => {
         this.insertaMensaje(mensaje);
     });
 
     this.getFetch = function(param){
-        fetch(`http://192.168.15.9:9000/${param}`)
+        fetch(`http://192.168.0.4:9000/${param}`)
         .then(response => response.json())
         .then(resp => {
             this.getTemplate(resp);
@@ -68,15 +68,16 @@ function Messenger(){
     this.enviaMensaje = function() {
         let msj = document.getElementById('mensaje').value;
         let nick = document.getElementById('nick').value;
+        let id = document.getElementById('ID').value;
 
 
         if(msj == '' || nick == ''){
-            alert('Algún campo vacío!!');
+            alert('No mensajes vacíos!');
             return;
         }
 
         let mensaje = {
-            ID : Math.random() * 1000,
+            ID : id,
             nick : nick,
             mensaje : msj
         }
@@ -102,7 +103,6 @@ window.addEventListener('load', () => {
     });
 
     document.querySelector('#btnChatgral').addEventListener('click', () => {
-        console.log('click');
         document.querySelector('#inbox').classList.add('d-none', 'd-md-block');
         document.querySelector('#chat').classList.remove('d-none', 'd-md-block');
     });
