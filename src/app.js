@@ -48,14 +48,6 @@ app.use(flash());
 app.use('/', iRoutes);
 app.use(errorController.getError404);
 
-let mensajes = [ 
-    {
-        ID      : 1,
-        nick    : 'ChatBot',    
-        mensaje : 'Bienvenido al Chat, por favor deja algún comentario'
-    }
-];
-
 //Conecting to database
 mongoose
     .connect(MONGO_URL)
@@ -63,21 +55,10 @@ mongoose
         console.log("Conected to database");
 
         const server = app.listen(PORT, () => {
-            console.log(`Server running in http://192.168.15.9:${PORT}`)
+            console.log(`Server running in http://192.168.0.14:${PORT}`)
         });
-        const io = require('./socket').init(server);
-
-        io.on('connection', (socket) => {
-            console.log(`client: ${socket.id}`);
-        
-            socket.emit('mensaje', mensajes);
-        
-            socket.on('sendMensaje', (data) => {
-                mensajes.push(data);
-                console.log('DATA:', mensajes);
-                io.sockets.emit('mensaje', mensajes);
-            });
-        });
+        require('./socket').init(server);
+        require('./controllers/mensajes');
     })
     .catch(err => {
         throw new Error('Error al conectar a la base de datos')
