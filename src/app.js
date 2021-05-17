@@ -12,7 +12,6 @@ const session = require('express-session');
 const MongoStore = require('connect-mongodb-session')(session);
 const flash = require('connect-flash');
 
-//mongodb+srv://rodolfo:TWd6HA7hRdpx4iB0@cluster0-k0awd.mongodb.net/test?retryWrites=true&w=majority
 const MONGO_URL = process.env.MONGO_URI || 'mongodb://localhost/chat-sockets';
 
 const app = express()//instancia de express
