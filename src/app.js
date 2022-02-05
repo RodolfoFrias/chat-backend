@@ -1,64 +1,62 @@
-'use strict';
-
+const createError = require('http-errors');
 const express = require('express');
-const http = require('http');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-
 const path = require('path');
-const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const session = require('express-session');
-const MongoStore = require('connect-mongodb-session')(session);
-const flash = require('connect-flash');
+const expressWinston = require('express-winston')
+const winston = require('winston')
 
-const MONGO_URL = process.env.MONGO_URI || 'mongodb://localhost/chat-sockets';
+const loginRoutes = require('./login/login.route')
+const userRoutes = require('./user/user.route')
 
-const app = express()//instancia de express
-const store = new MongoStore({
-    uri: MONGO_URL,
-    collection: 'sessions'
+const app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+//Cors
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, responseType');  
+  next();
 });
 
-const PORT = process.env.PORT || 9000;
+// express-winston logger makes sense BEFORE the router
+app.use(expressWinston.logger({
+  transports: [
+    new winston.transports.Console()
+  ],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json()
+  )
+}))
 
-//Importing routes
-const iRoutes = require('./routes/routes');
-const errorController = require('./controllers/errors');
+app.use(loginRoutes);
+app.use(userRoutes);
 
-app.set('views', path.join(__dirname,'cliente'));
-app.set('view engine', 'ejs');
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
-//Middlewares
-app.use(cors());
-app.use(express.static(__dirname+'/cliente'));
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({entended:false}));
-app.use(session({
-     secret: "el secreto de amor",
-     resave: false, 
-     saveUninitialized: false, 
-     store: store
-}));
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-app.use(flash());
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
 
-//Routes
-app.use('/', iRoutes);
-app.use(errorController.getError404);
-
-//Conecting to database
-mongoose
-    .connect(MONGO_URL)
-    .then(db => {
-        console.log("Conected to database");
-
-        const server = app.listen(PORT, () => {
-            console.log(`Server running in http://192.168.0.14:${PORT}`)
-        });
-        require('./socket').init(server);
-        require('./controllers/mensajes');
-    })
-    .catch(err => {
-        throw new Error('Error al conectar a la base de datos')
-    });
+module.exports = app;
