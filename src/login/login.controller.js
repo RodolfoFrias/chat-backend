@@ -1,7 +1,10 @@
 class LoginController {
-    constructor () {}
 
-    login (req, res, next) {
+    constructor (loginService) {
+        this.loginService = loginService
+    }
+
+    login (req, res) {
         res.render('login/login')
     }
 

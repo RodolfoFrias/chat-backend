@@ -1,8 +1,11 @@
-window.addEventListener('DOMContentLoaded', () => {
-    let socket = io()
-    socket = io.connect('http://192.168.0.10:3000',{'forceNew' : true});
+window.addEventListener('load', () => {
+    const socket = io()
+    console.log(socket)
+    // socket = io.connect('http://localhost:3000',{'forceNew' : true});
 
-    socket.on('message', (message) => {
-        console.log(`Message: ${message}`)
-    });
+    // console.log(socket)
+
+    // socket.on('message', (message) => {
+    //     console.log(`Message: ${message}`)
+    // });
 })

@@ -1,16 +1,23 @@
-let io;
-const logger = require('./logger')
-module.exports = {
-    init : httpServer => {
-        logger.debug('Getting socket...')
-        io = require('socket.io')(httpServer);
-        return io;
-    },
-    getIO : () => {
-        if(!io){
-            return new Error('Socket no inicializado');
-        }
-        logger.debug('Get socket io instance')
-        return io;
+class SocketServer {
+    constructor ({ logger, socketio }) {
+        this.io = null
+        this.socketio = socketio
+        this.logger = logger
     }
+
+    start (httpServer) {
+        this.io = this.socketio(httpServer)
+        this.logger.info(`Got socket ${this.io}`)
+        return this.io
+    }
+
+    getIO () {
+        if(!this.io) {
+            throw new Error('Not socket initialized')
+        }
+        return this.io
+    }
+
 }
+
+module.exports = SocketServer

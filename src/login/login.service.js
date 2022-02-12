@@ -1,5 +1,4 @@
 class LoginService {
-    constructor () {}
 
     login () {
         return true

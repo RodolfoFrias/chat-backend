@@ -1,7 +1,11 @@
 class UserController {
-    constructor () {}
 
-    user (req, res, next) {
+    constructor (userService) {
+        this.userService = userService
+    }
+
+    user (req, res) {
+        this.userService.send()
         res.json('User')
     }
 
