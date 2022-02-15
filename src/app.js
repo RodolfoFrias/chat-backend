@@ -1,6 +1,5 @@
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const expressWinston = require('express-winston')
@@ -19,15 +18,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // express-winston logger makes sense BEFORE the router
 app.use(expressWinston.logger({

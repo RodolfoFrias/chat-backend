@@ -5,7 +5,7 @@ class LoginController {
     }
 
     login (req, res) {
-        res.render('login/login')
+        this.login(req.body.username)
     }
 
 }
