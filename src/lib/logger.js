@@ -2,7 +2,7 @@ const winston = require('winston');
 
 module.exports = () => { 
   const logger = winston.createLogger({
-    level: 'info',
+    level: 'debug',
     format: winston.format.combine(
       winston.format.json(),
       winston.format.colorize()

@@ -1,21 +1,13 @@
 class LoginService {
-
     constructor({ redisService, logger }) {
         this.redis = redisService
         this.redisClient = null
-        this.logger = logger
+        this.logger = logger()
     }
 
-    login (username) {
-        let sucess = true
-        try {
-            this.redis.createClient()
-            this.redis.set('username', username)   
-        } catch (error) {
-            this.logger.error(error)
-            sucess = false
-        }
-        return sucess
+    async login (username) {
+        await this.redis.setData(username, username)  
+        return this.redis.getData(username) 
     }
 
 }

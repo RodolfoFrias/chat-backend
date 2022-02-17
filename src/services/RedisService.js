@@ -3,29 +3,27 @@ const REDIS_PORT = process.env.REDIS_PORT || 6379
 
 class RedisService {
     constructor({ logger }){
-        this.logger = logger
-        this.client = null
+        this.logger = logger()
     }
 
-    setClient () {
-        this.client = redis.createClient(REDIS_PORT)
+    createClient () {
+        const client = redis.createClient(REDIS_PORT)
+        client.on('error', err => this.logger.error(err))
+        return client
     }
 
-    getClient () {
-        return this.client
+    async setData (key, value) {
+        this.logger.debug(`Inserting: ${key}:${value}`)
+        const client = this.createClient()
+        await client.connect()
+        await client.set(key, value)
     }
 
-    setData (key, value) {
-        this.client.set(key, value)
-    }
-
-    getData (key) {
-        return new Promise ((resolve, reject) => {
-            this.client.get(key, function (err, data) {
-                if(err) reject(err)
-                resolve(data)
-            })
-        })
+    async getData (key) {
+        this.logger.debug(`Getting: ${key}`)
+        const client = this.createClient()
+        await client.connect()
+        return client.get(key)
     }
 }
 
