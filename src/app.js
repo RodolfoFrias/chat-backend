@@ -1,14 +1,21 @@
-const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const expressWinston = require('express-winston')
 const winston = require('winston')
+const { api, dashboard } = require('./parseServer')()
 
 const loginRoutes = require('./login/login.route')
 const userRoutes = require('./user/user.route')
 
 const app = express();
+
+// Parse Dashboard set-up
+app.use('/dashboard', dashboard);
+
+// Serve the Parse API on the /parse URL prefix
+const mountPath = process.env.PARSE_MOUNT || '/parse';
+app.use(mountPath, api);
 
 //Cors
 app.use((req, res, next) => {

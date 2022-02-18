@@ -3,7 +3,6 @@ version: '2'
 networks:
   app-tier:
     driver: bridge
-
 services:
   redis:
     image: 'bitnami/redis:latest'
@@ -13,6 +12,17 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - app-tier
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+        - PUID=1000
+        - PGID=1000
+    volumes:
+        - /home/barry/mongodb/database:/data/db
+    ports:
+        - 27017:27017
+    restart: unless-stopped
   myapp:
     image: 'redis'
     networks:
