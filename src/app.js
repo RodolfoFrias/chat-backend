@@ -44,7 +44,6 @@ app.use(expressWinston.logger({
 app.use(loginRoutes);
 app.use(userRoutes);
 
-
 // error handler
 app.use((err, req, res) => {
   // set locals, only providing error in development

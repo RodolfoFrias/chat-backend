@@ -7,7 +7,7 @@ module.exports = () => {
         databaseURI: env.DATABASE_URI,
         cloud: env.CLOUD_PATH,
         appId: env.APP_ID,
-        masterKey: env.MASTER_KEY, //Add your master key here. Keep it secret!
+        masterKey: env.MASTER_KEY, // Add your master key here. Keep it secret!
         serverURL: env.SERVER_URL,  // Don't forget to change to https if needed
         // liveQuery: {
         //   classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
