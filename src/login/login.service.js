@@ -6,11 +6,20 @@ class LoginService {
         this.UserModel = userModel
     }
 
-    async login ({ username, password}) {
-        await Parse.User.logIn(username, password)
+    async login ({ username, password }) {
+        const userQuery = new Parse.Query('_User')
+        userQuery.equalTo('username', username)
+        const userFound = await userQuery.first()
+
+        if(!userFound) {
+            this.logger.info(`No user for ${username}, creating new user...`)
+            return this._signup({ username, password })
+        }
+
+        return  Parse.User.logIn(username, password)
     }
 
-    async signup ({ username, password }) {
+    async _signup ({ username, password }) {
         const newUser = new this.UserModel()
         newUser.setUsername(username)
         newUser.setPassword(password)

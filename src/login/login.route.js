@@ -9,7 +9,6 @@ const UserModel = Parse.Object.extend('_User')
 
 const initRouter = (controller) => {
     router.post('/login', controller.login.bind(controller))
-    router.post('/signup', controller.signup.bind(controller))
     return router
 }
 
