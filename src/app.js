@@ -5,7 +5,7 @@ const expressWinston = require('express-winston')
 const winston = require('winston')
 const { api, dashboard } = require('./parseServer')()
 
-const loginRoutes = require('./login/login.route')
+const sessionRoutes = require('./session/session.route')
 const userRoutes = require('./user/user.route')
 
 const app = express();
@@ -41,7 +41,7 @@ app.use(expressWinston.logger({
   )
 }))
 
-app.use(loginRoutes);
+app.use(sessionRoutes);
 app.use(userRoutes);
 
 // error handler

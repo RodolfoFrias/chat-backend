@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const LoginService = require('./login.service')
-const LoginController = require('./login.controller')
+const SessionService = require('./session.service')
+const SessionController = require('./session.controller')
 const RedisService = require('../services/RedisService')
 const logger = require('../lib/logger')
 
@@ -9,13 +9,14 @@ const UserModel = Parse.Object.extend('_User')
 
 const initRouter = (controller) => {
     router.post('/login', controller.login.bind(controller))
+    router.post('/logout', controller.logout.bind(controller))
     return router
 }
 
 module.exports = initRouter(
-    new LoginController(
+    new SessionController(
         logger, 
-        new LoginService({
+        new SessionService({
             redisService: new RedisService({ logger }),
             logger: logger,
             userModel: UserModel
