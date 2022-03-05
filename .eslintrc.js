@@ -1,4 +1,10 @@
 module.exports = {
+    "env": {
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2022
+    },
     "extends": ["airbnb", "prettier", "plugin:node/recommended"],
     "plugins": ["prettier"],
     "rules": {

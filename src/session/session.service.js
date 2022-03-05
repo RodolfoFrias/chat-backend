@@ -15,13 +15,13 @@ class SessionService {
 
         if(!userFound) {
             this.logger.info(`No user for ${username}, creating new user...`)
-            return this._signup({ username, password })
+            return this.#signup({ username, password })
         }
-
+    
         return  Parse.User.logIn(username, password)
     }
 
-    async _signup ({ username, password }) {
+    async #signup ({ username, password }) {
         const newUser = new this.UserModel()
         newUser.setUsername(username)
         newUser.setPassword(password)
@@ -29,19 +29,19 @@ class SessionService {
     }
 
     async logout(username) {
-        const user = await this._findUser(username)
+        const user = await this.#findUser(username)
         if(!user){
             this.logger.error(`User ${username} not found`)
             throw new Error('User not found')
         }
-        const session = await this._findSession(user)
+        const session = await this.#findSession(user)
         if(session){
             return session.destroy(null, { useMasterKey: true })
         }
         return true
     }
 
-    async _findSession(user) {
+    async #findSession(user) {
         try {
             const sessionQuery = new Parse.Query('_Session')
             sessionQuery.equalTo('user', user)
@@ -52,7 +52,7 @@ class SessionService {
         }
     }
 
-    async _findUser(username) {
+    async #findUser(username) {
         const userQuery = new Parse.Query('_User')
         userQuery.equalTo('username', username)
         return userQuery.first()
