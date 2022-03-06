@@ -5,8 +5,8 @@ const expressWinston = require('express-winston')
 const winston = require('winston')
 const { api, dashboard } = require('./parseServer')()
 
-const sessionRoutes = require('./session/session.route')
-const userRoutes = require('./user/user.route')
+const sessionRoutes = require('./entities/session/session.route')
+const userRoutes = require('./entities/user/user.route')
 
 const app = express();
 

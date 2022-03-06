@@ -28,7 +28,7 @@ class SocketService {
     }
 
     getSocket () {
-        if(this.socket == undefined || this.socket == null){
+        if(this.socket === undefined || this.socket == null){
             this.logger.error('Empty socket')
             return;
         }
@@ -44,6 +44,10 @@ class SocketService {
 
     sendMessageToAllClient (event, description) {
         this.socket.emit(event, description);
+    }
+
+    createChatRoom (roomName) {
+        this.socket.join(roomName)
     }
 }
 

@@ -1,4 +1,4 @@
-const handleParseErrors = require('../util/handleParseErrors')
+const handleParseErrors = require('../../util/handleParseErrors')
 
 class SessionService {
     constructor({ redisService, logger, userModel }) {
