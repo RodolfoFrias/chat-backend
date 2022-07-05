@@ -8,12 +8,24 @@ class SocketService {
 
     connect () {
         this.logger.info('Connecting to socket...')
+        this.socketServer.getIO().on('connection', (socket) => {
+            this.socket = socket
+            this.logger.info(`Socket connected ${socket.id}`)
+            socket.on('message', (resp) => {
+                console.log(resp)
+                return true
+            })
+        })
+    }
+
+    connectToRoom() {
         this.socketServer.getIO().of((nsp, query, next) => {
            this.logger.info('Namespace: ',nsp, 'Query:',query);
             // Do your authentication or whatever here...
             next(null, true);            // If success
 
           }).on('connect', (socket) => {
+            this.logger.info('Socket connected')
             this.socket = socket
           })
     }
@@ -43,7 +55,7 @@ class SocketService {
     }
 
     sendMessageToAllClient (event, description) {
-        this.socket.emit(event, description);
+        this.socketServer.getIO().sockets.emit(event, description);
     }
 
     createChatRoom (roomName) {

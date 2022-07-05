@@ -6,7 +6,11 @@ class SocketServer {
     }
 
     start (httpServer) {
-        this.io = this.socketio(httpServer)
+        this.io = this.socketio(httpServer, {
+            cors: {
+                origin: 'http://localhost:3000'
+            }
+        })
         this.logger.info(`Got socket ${this.io}`)
         return this.io
     }
