@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const expressWinston = require('express-winston')
 const winston = require('winston')
-const { api, dashboard } = require('./parseServer')()
+const { parseServer, parseDashboard } = require('./parseServer')()
 
 const sessionRoutes = require('./entities/session/session.route')
 const userRoutes = require('./entities/user/user.route')
@@ -11,11 +11,12 @@ const userRoutes = require('./entities/user/user.route')
 const app = express();
 
 // Parse Dashboard set-up
-app.use('/dashboard', dashboard);
+app.use('/dashboard', parseDashboard);
 
 // Serve the Parse API on the /parse URL prefix
 const mountPath = process.env.PARSE_MOUNT || '/parse';
-app.use(mountPath, api);
+parseServer.start()
+app.use(mountPath, parseServer.app);
 
 //Cors
 app.use((req, res, next) => {
@@ -28,7 +29,6 @@ app.use((req, res, next) => {
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
 // express-winston logger makes sense BEFORE the router
 app.use(expressWinston.logger({

@@ -1,4 +1,6 @@
-const router = require('express').Router()
+const express = require('express');
+
+const router = express.Router()
 const SessionService = require('./session.service')
 const SessionController = require('./session.controller')
 const RedisService = require('../../services/RedisService')

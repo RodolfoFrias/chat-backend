@@ -1,4 +1,6 @@
-const router = require('express').Router();
+const express = require('express');
+
+const router = express.Router()
 const ChatService = require('./chat.service');
 const ChatController = require('./chat.controller');
 

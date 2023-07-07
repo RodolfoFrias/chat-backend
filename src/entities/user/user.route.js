@@ -1,4 +1,6 @@
-const router = require('express').Router();
+const express = require('express');
+
+const router = express.Router()
 const UserService = require('./user.service');
 const UserController = require('./user.controller');
 const AwilixContainer = require('../../awilix')

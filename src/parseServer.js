@@ -3,7 +3,8 @@ const ParseDashboard = require('parse-dashboard')
 const env = require('./lib/env')
 
 module.exports = () => {
-    const api = new ParseServer({
+    console.info('ENV', env.USERNAME, env.PASSWORD)
+    const parseServer = new ParseServer({
         databaseURI: env.DATABASE_URI,
         cloud: env.CLOUD_PATH,
         appId: env.APP_ID,
@@ -13,10 +14,11 @@ module.exports = () => {
         //   classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
         // }
         });
+
         // Client-keys like the javascript key or the .NET key are not necessary with parse-server
         // If you wish you require them, you can set them as options in the initialization above:
         // javascriptKey, restAPIKey, dotNetKey, clientKey
-        const dashboard = new ParseDashboard({
+        const parseDashboard = new ParseDashboard({
         "apps":[
             {
             "serverURL": env.SERVER_URL,
@@ -36,5 +38,5 @@ module.exports = () => {
         trustProxy: 1
     });
 
-    return { api, dashboard }
+    return { parseServer, parseDashboard }
 }
