@@ -1,16 +1,16 @@
 class UserService {
 
-    constructor({ logger, socketService }) {
+    constructor({ logger, redisService }) {
         this.logger = logger
-        this.socketService = socketService
+        this.redisService = redisService
     }
 
-    user () {
-        return true
+    async setUser({ id, room }) {
+        await this.redisService.setData(id, JSON.stringify({ id, room }))
     }
 
-    send () {
-        this.socketService.sendMessageToAllClient('message', 'Hey buddy!')
+    async getUser(id) {
+        return this.redisService.getData(id)
     }
 
 }

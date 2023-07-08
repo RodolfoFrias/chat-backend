@@ -5,7 +5,6 @@ class UserController {
     }
 
     user (req, res) {
-        this.userService.send()
         res.json('User')
     }
 

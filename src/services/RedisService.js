@@ -1,30 +1,41 @@
 const redis = require('redis')
+const { createAdapter } = require('@socket.io/redis-adapter')
 
 const REDIS_PORT = process.env.REDIS_PORT || 6379
 
 class RedisService {
-    constructor({ logger }){
-        this.logger = logger()
+    constructor({ logger, socketServer }){
+        this.logger = logger
+        this.connected = false
+        this.socketServer = socketServer
+        this.client = this.#createClient()
     }
 
-    createClient () {
+    #createClient () {
         const client = redis.createClient(REDIS_PORT)
         client.on('error', err => this.logger.error(err))
         return client
     }
 
+    async #connectIfNoConnection() {
+        if(!this.connected) {
+            await this.client.connect()
+            const subClient = this.client.duplicate()
+            this.socketServer.getIO().adapter(createAdapter(this.client, subClient))
+            this.connected = true
+        }
+    }
+
     async setData (key, value) {
         this.logger.debug(`Inserting: ${key}:${value}`)
-        const client = this.createClient()
-        await client.connect()
-        await client.set(key, value)
+        await this.#connectIfNoConnection()
+        await this.client.set(key, value)
     }
 
     async getData (key) {
         this.logger.debug(`Getting: ${key}`)
-        const client = this.createClient()
-        await client.connect()
-        return client.get(key)
+        await this.#connectIfNoConnection()
+        return this.client.get(key)
     }
 }
 

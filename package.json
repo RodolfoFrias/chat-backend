@@ -9,6 +9,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@socket.io/redis-adapter": "^8.2.1",
     "awilix": "^8.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~4.3.4",

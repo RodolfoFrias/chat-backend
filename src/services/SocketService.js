@@ -1,19 +1,29 @@
 class SocketService {
 
-    constructor ({ logger, socketServer }) {
+    constructor ({ logger, socketServer, userService }) {
         this.logger = logger
         this.socketServer = socketServer
         this.socket = null
+        this.userService = userService
     }
 
     connect () {
         this.logger.info('Connecting to socket...')
-        this.socketServer.getIO().on('connection', (socket) => {
+        const io = this.socketServer.getIO()
+        io.on('connection', (socket) => {
             this.socket = socket
             this.logger.info(`Socket connected ${socket.id}`)
-            socket.on('message', (resp) => {
-                console.log(resp)
-                return true
+            socket.on('joinMainRoom', async ({ room }) => {
+               await this.userService.setUser({
+                  id: socket.id,
+                  room: room
+               })
+               socket.join(room)
+            })
+            socket.on('chatMessage', async (message) => {
+                const userInfo = await this.userService.getUser(socket.id)
+                const { id, room } = JSON.parse(userInfo)
+                io.to(room).emit('message', message)
             })
         })
     }
