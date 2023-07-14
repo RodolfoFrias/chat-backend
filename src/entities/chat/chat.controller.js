@@ -16,6 +16,17 @@ class ChatController {
         }
     }
 
+    async getMessages(req, res, next) {
+        try {
+            const { room } = req.query
+            const message = await this.chatService.getMessages(room)
+            console.log(message)
+            res.json('ok')
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 
 module.exports = ChatController

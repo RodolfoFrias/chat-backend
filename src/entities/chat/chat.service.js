@@ -1,12 +1,12 @@
 class ChatService {
 
-    constructor({ logger, socketService }) {
+    constructor({ logger, userService }) {
         this.logger = logger
-        this.socketService = socketService
+        this.userService = userService
     }
 
-    async createChatRoom(roomName) {
-        return this.socketService.createChatRoom(roomName)
+    async getMessages(room) {
+        return this.userService.getMessages(room)
     }
 
 }

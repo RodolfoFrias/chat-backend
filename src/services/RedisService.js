@@ -26,12 +26,23 @@ class RedisService {
         }
     }
 
+    /**
+     * Save data into redis
+     * @param {any} key 
+     * @param {any} value 
+     * @returns {Promise<void>}
+     */
     async setData (key, value) {
         this.logger.debug(`Inserting: ${key}:${value}`)
         await this.#connectIfNoConnection()
         await this.client.set(key, value)
     }
 
+    /**
+     * Retrieve data from redis based on key
+     * @param {any} key 
+     * @returns {Promise<RedisClient>}
+     */
     async getData (key) {
         this.logger.debug(`Getting: ${key}`)
         await this.#connectIfNoConnection()

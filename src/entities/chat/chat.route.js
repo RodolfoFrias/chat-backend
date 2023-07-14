@@ -11,7 +11,8 @@ const logger = container.resolve('logger')
 const socketService = container.resolve('socketService')
 
 const Router = (controller) => {
-    router.post('/create-chat', controller.user.bind(controller));
+    router.post('/create-chat', controller.createChatRoom.bind(controller));
+    router.get('/get-messages', controller.getMessages.bind(controller))
     return router;
 }
 

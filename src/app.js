@@ -7,6 +7,7 @@ const { parseServer, parseDashboard } = require('./parseServer')()
 
 const sessionRoutes = require('./entities/session/session.route')
 const userRoutes = require('./entities/user/user.route')
+const chatRoutes = require('./entities/chat/chat.route')
 
 const app = express();
 
@@ -43,9 +44,10 @@ app.use(expressWinston.logger({
 
 app.use(sessionRoutes);
 app.use(userRoutes);
+app.use(chatRoutes)
 
 // error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err?.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

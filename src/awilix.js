@@ -7,7 +7,8 @@ module.exports = () => {
     container.loadModules([
         './lib/*.js',
         './services/*.js',
-        './entities/*/*.service.js'
+        './entities/*/*.service.js',
+        './entities/*/*.controller.js'
     ], {
         resolverOptions: {
             lifetime: Lifetime.SINGLETON
