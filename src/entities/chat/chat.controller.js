@@ -1,13 +1,10 @@
 class ChatController {
 
-    constructor (chatService) {
-        this.chatService = chatService
-    }
-
     async createChatRoom(req, res, next) {
         try {
+            const chatService = req.scope.resolve('chatService')
             const { roomName } = req.body
-            const roomCode = await this.chatService.createChatRoom(roomName)
+            const roomCode = await chatService.createChatRoom(roomName)
             res.status(200).json({
                 message: `Room created with code ${roomCode}`
             })
@@ -18,10 +15,10 @@ class ChatController {
 
     async getMessages(req, res, next) {
         try {
+            const chatService = req.scope.resolve('chatService')
             const { room } = req.query
-            const message = await this.chatService.getMessages(room)
-            console.log(message)
-            res.json('ok')
+            const messages = await chatService.getMessages(room)
+            res.status(200).json({messages: messages})
         } catch (error) {
             next(error)
         }
@@ -29,4 +26,4 @@ class ChatController {
 
 }
 
-module.exports = ChatController
+module.exports = new ChatController()

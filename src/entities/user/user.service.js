@@ -13,14 +13,6 @@ class UserService {
         return this.redisService.getData(id)
     }
 
-    async getMessages(room) {
-        return this.redisService.getData(room)
-    }
-
-    async saveMessage(room, message) {
-        await this.redisService.setData(room, message)
-    }
-
 }
 
 module.exports = UserService

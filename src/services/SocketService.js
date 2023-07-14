@@ -1,9 +1,10 @@
 class SocketService {
 
-    constructor ({ logger, socketServer, userService }) {
+    constructor ({ logger, socketServer, userService, chatService }) {
         this.logger = logger
         this.socketServer = socketServer
         this.userService = userService
+        this.chatService = chatService
         this.socket = null
         this.io = null
     }
@@ -33,12 +34,12 @@ class SocketService {
     async #onChatMessage(message) {
         const userInfo = await this.userService.getUser(this.socket.id)
         const { id, room } = JSON.parse(userInfo)
-        await this.userService.saveMessage(room, message)
-        this.io.to(room).emit('message', message)
+        await this.chatService.saveMessage(room, message)
+        this.io.to(room).emit('newMessage')
     }
 
     #onDisconnect (reason) {
-        this.logger.info(reason);
+        this.logger.info(`Disconnecting: ${reason}`);
         if (reason === 'io server disconnect') {
           this.socket.connect();
         }

@@ -4,10 +4,11 @@
  */
 
 const http = require('http');
-const app = require('../app');
 const AwilixContainer = require('../awilix')
 
 const container = AwilixContainer()
+const app = require('../app')({ container });
+
 const logger = container.resolve('logger')
 const socketServer = container.resolve('socketServer')
 const socketService = container.resolve('socketService')
